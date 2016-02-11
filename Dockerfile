@@ -42,15 +42,15 @@ COPY setenv.sh $CATALINA_HOME/bin/setenv.sh
 
 # Build Moqui and add Tomcat Runtime
 WORKDIR /opt/moqui
-RUN ./gradlew cleanAll
-RUN ./gradlew build
-RUN ./gradlew addRuntime
+RUN ./gradlew cleanAll \
+	&& ./gradlew build \
+	&& ./gradlew addRuntime
 
 # Remove all webapps from Tomcat
-RUN rm -rf $CATALINA_HOME/webapps/ROOT
-RUN rm -rf $CATALINA_HOME/webapps/examples
-RUN rm -rf $CATALINA_HOME/webapps/host-manager
-RUN rm -rf $CATALINA_HOME/webapps/manager
+RUN rm -rf $CATALINA_HOME/webapps/ROOT \
+	&& rm -rf $CATALINA_HOME/webapps/examples \
+	&& rm -rf $CATALINA_HOME/webapps/host-manager \
+	&& rm -rf $CATALINA_HOME/webapps/manager
 
 # Copy Moqui Runtime WAR to Tomcat
 RUN cp moqui-plus-runtime.war $CATALINA_HOME/webapps/ROOT.war
